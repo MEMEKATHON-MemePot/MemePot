@@ -1,9 +1,26 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import HeroSection from "./components/HeroSection";
 import PrizePoolsSection from "./components/PrizePoolsSection";
 
 export default function Prizes() {
+  const [stars, setStars] = useState<Array<{ id: number; top: number; left: number; delay: number; opacity: number }>>(
+    [],
+  );
+
+  useEffect(() => {
+    // 클라이언트에서만 별 생성
+    setStars(
+      [...Array(50)].map((_, i) => ({
+        id: i,
+        top: Math.random() * 100,
+        left: Math.random() * 100,
+        delay: Math.random() * 3,
+        opacity: Math.random() * 0.7 + 0.3,
+      })),
+    );
+  }, []);
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#0a0118] via-[#1a0a2e] to-[#0a0118] text-white relative overflow-hidden">
       {/* Cosmic Background Effects */}
@@ -21,15 +38,15 @@ export default function Prizes() {
 
       {/* Stars Background */}
       <div className="fixed inset-0 pointer-events-none">
-        {[...Array(50)].map((_, i) => (
+        {stars.map(star => (
           <div
-            key={i}
+            key={star.id}
             className="absolute w-1 h-1 bg-white rounded-full animate-pulse"
             style={{
-              top: `${Math.random() * 100}%`,
-              left: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 3}s`,
-              opacity: Math.random() * 0.7 + 0.3,
+              top: `${star.top}%`,
+              left: `${star.left}%`,
+              animationDelay: `${star.delay}s`,
+              opacity: star.opacity,
             }}
           ></div>
         ))}

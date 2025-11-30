@@ -26,6 +26,19 @@ export default function PrizePoolCard({ pool }: PrizePoolCardProps) {
     minutes: 0,
     seconds: 0,
   });
+  const [particles, setParticles] = useState<Array<{ id: number; top: number; left: number; delay: number }>>([]);
+
+  useEffect(() => {
+    // 클라이언트에서만 particles 생성
+    setParticles(
+      [...Array(6)].map((_, i) => ({
+        id: i,
+        top: Math.random() * 100,
+        left: Math.random() * 100,
+        delay: i * 0.3,
+      })),
+    );
+  }, []);
 
   useEffect(() => {
     const calculateTimeLeft = () => {
@@ -56,14 +69,14 @@ export default function PrizePoolCard({ pool }: PrizePoolCardProps) {
 
       {/* Energy Particles */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        {[...Array(6)].map((_, i) => (
+        {particles.map(particle => (
           <div
-            key={i}
+            key={particle.id}
             className={`absolute w-1 h-1 bg-gradient-to-r ${pool.gradient} rounded-full animate-pulse`}
             style={{
-              top: `${Math.random() * 100}%`,
-              left: `${Math.random() * 100}%`,
-              animationDelay: `${i * 0.3}s`,
+              top: `${particle.top}%`,
+              left: `${particle.left}%`,
+              animationDelay: `${particle.delay}s`,
               opacity: 0.6,
             }}
           ></div>
