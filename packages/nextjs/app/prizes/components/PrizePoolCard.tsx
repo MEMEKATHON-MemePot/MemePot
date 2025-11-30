@@ -1,4 +1,7 @@
+"use client";
+
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 interface PrizePool {
   id: string;
@@ -26,19 +29,7 @@ export default function PrizePoolCard({ pool }: PrizePoolCardProps) {
     minutes: 0,
     seconds: 0,
   });
-  const [particles, setParticles] = useState<Array<{ id: number; top: number; left: number; delay: number }>>([]);
-
-  useEffect(() => {
-    // 클라이언트에서만 particles 생성
-    setParticles(
-      [...Array(6)].map((_, i) => ({
-        id: i,
-        top: Math.random() * 100,
-        left: Math.random() * 100,
-        delay: i * 0.3,
-      })),
-    );
-  }, []);
+  const router = useRouter();
 
   useEffect(() => {
     const calculateTimeLeft = () => {
@@ -60,6 +51,11 @@ export default function PrizePoolCard({ pool }: PrizePoolCardProps) {
     return () => clearInterval(timer);
   }, [pool.nextDraw]);
 
+  const handleViewDetails = () => {
+    router.push(`/prizes-detail/${pool.id}`);
+    window.scrollTo(0, 0);
+  };
+
   return (
     <div className="group relative bg-gradient-to-br from-[#1a0a2e]/80 to-[#0a0118]/80 backdrop-blur-sm rounded-2xl border border-purple-500/30 hover:border-purple-500/60 transition-all duration-300 overflow-hidden hover:scale-105 hover:shadow-2xl hover:shadow-purple-500/30">
       {/* Animated Background Glow */}
@@ -69,14 +65,14 @@ export default function PrizePoolCard({ pool }: PrizePoolCardProps) {
 
       {/* Energy Particles */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        {particles.map(particle => (
+        {[...Array(6)].map((_, i) => (
           <div
-            key={particle.id}
+            key={i}
             className={`absolute w-1 h-1 bg-gradient-to-r ${pool.gradient} rounded-full animate-pulse`}
             style={{
-              top: `${particle.top}%`,
-              left: `${particle.left}%`,
-              animationDelay: `${particle.delay}s`,
+              top: `${Math.random() * 100}%`,
+              left: `${Math.random() * 100}%`,
+              animationDelay: `${i * 0.3}s`,
               opacity: 0.6,
             }}
           ></div>
@@ -166,6 +162,7 @@ export default function PrizePoolCard({ pool }: PrizePoolCardProps) {
 
         {/* Action Button */}
         <button
+          onClick={handleViewDetails}
           className={`w-full py-3 bg-gradient-to-r ${pool.gradient} hover:opacity-90 rounded-lg font-bold transition-all shadow-lg hover:shadow-xl hover:scale-105 flex items-center justify-center gap-2 whitespace-nowrap`}
         >
           <i className="ri-ticket-fill text-lg"></i>
