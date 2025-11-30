@@ -37,7 +37,7 @@ export default function LoadingPage() {
   return (
     <div className="fixed inset-0 w-full h-full z-50">
       {/* Full Background Video */}
-      <video autoPlay muted loop className="absolute inset-0 w-full h-full object-cover">
+      <video autoPlay muted className="absolute inset-0 w-full h-full object-cover">
         <source src="/video.webm" type="video/webm" />
         <source src="/video.mp4" type="video/mp4" />
         Your browser does not support the video tag.
