@@ -7,6 +7,7 @@ import "@typechain/hardhat";
 import "hardhat-gas-reporter";
 import "solidity-coverage";
 import "@nomicfoundation/hardhat-verify";
+import "@nomicfoundation/hardhat-ignition-ethers";
 import "hardhat-deploy";
 import "hardhat-deploy-ethers";
 import { task } from "hardhat/config";
@@ -33,6 +34,16 @@ const config: HardhatUserConfig = {
             // https://docs.soliditylang.org/en/latest/using-the-compiler.html#optimizer-options
             runs: 200,
           },
+        },
+      },
+      {
+        version: "0.8.24",
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 200,
+          },
+          evmVersion: "shanghai", // Memecore evm version is shanghai.
         },
       },
     ],
@@ -125,10 +136,37 @@ const config: HardhatUserConfig = {
       url: "https://forno.celo-sepolia.celo-testnet.org/",
       accounts: [deployerPrivateKey],
     },
+    insectarium: {
+      url: "https://rpc.insectarium.memecore.net",
+      accounts: [deployerPrivateKey],
+      chainId: 43522,
+    },
   },
   // Configuration for harhdat-verify plugin
   etherscan: {
-    apiKey: etherscanApiKey,
+    apiKey: {
+      mainnet: etherscanApiKey,
+      sepolia: etherscanApiKey,
+      arbitrum: etherscanApiKey,
+      arbitrumSepolia: etherscanApiKey,
+      optimism: etherscanApiKey,
+      optimismSepolia: etherscanApiKey,
+      polygon: etherscanApiKey,
+      polygonAmoy: etherscanApiKey,
+      base: etherscanApiKey,
+      baseSepolia: etherscanApiKey,
+      insectarium: "no-api-key-needed",
+    },
+    customChains: [
+      {
+        network: "insectarium",
+        chainId: 43522,
+        urls: {
+          apiURL: "https://insectarium.blockscout.memecore.com/api",
+          browserURL: "https://insectarium.blockscout.memecore.com",
+        },
+      },
+    ],
   },
   // Configuration for etherscan-verify from hardhat-deploy plugin
   verify: {
