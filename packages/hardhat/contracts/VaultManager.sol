@@ -17,6 +17,9 @@ contract VaultManager is AccessControl, ReentrancyGuard, Pausable {
 
     bytes32 public constant OPERATOR_ROLE = keccak256("OPERATOR_ROLE");
 
+    // Address used to represent native token (MEME) in mappings
+    address public constant NATIVE_TOKEN = address(0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE);
+
     // Vault information for each token
     struct VaultInfo {
         bool isActive;
@@ -152,6 +155,42 @@ contract VaultManager is AccessControl, ReentrancyGuard, Pausable {
     }
 
     /**
+     * @notice Deposit native tokens (MEME) into a vault
+     */
+    function depositNative() external payable nonReentrant whenNotPaused {
+        require(vaults[NATIVE_TOKEN].isActive, "VaultManager: Native vault not active");
+        require(msg.value > 0, "VaultManager: Amount must be greater than 0");
+
+        UserDeposit storage userDeposit = userDeposits[msg.sender][NATIVE_TOKEN];
+
+        // Check max deposit limit
+        if (vaults[NATIVE_TOKEN].maxDepositPerUser > 0) {
+            require(
+                userDeposit.amount + msg.value <= vaults[NATIVE_TOKEN].maxDepositPerUser,
+                "VaultManager: Exceeds max deposit per user"
+            );
+        }
+
+        // Update user deposit
+        if (userDeposit.amount == 0) {
+            userDeposit.depositTime = block.timestamp;
+            userDeposit.lastRewardClaim = block.timestamp;
+        }
+        userDeposit.amount += msg.value;
+
+        // Update vault total deposits
+        vaults[NATIVE_TOKEN].totalDeposits += msg.value;
+
+        // Transfer to YieldGenerator if set
+        if (yieldGenerator != address(0)) {
+            (bool success, ) = yieldGenerator.call{value: msg.value}("");
+            require(success, "VaultManager: Transfer to yield generator failed");
+        }
+
+        emit Deposited(msg.sender, NATIVE_TOKEN, msg.value);
+    }
+
+    /**
      * @notice Withdraw tokens from a vault
      * @param token The ERC20 token address
      * @param percentage The percentage to withdraw (0-100)
@@ -174,7 +213,12 @@ contract VaultManager is AccessControl, ReentrancyGuard, Pausable {
 
         // Transfer tokens back to user
         // In production, this would request withdrawal from YieldGenerator
-        IERC20(token).safeTransfer(msg.sender, withdrawAmount);
+        if (token == NATIVE_TOKEN) {
+            (bool success, ) = msg.sender.call{value: withdrawAmount}("");
+            require(success, "VaultManager: Native token transfer failed");
+        } else {
+            IERC20(token).safeTransfer(msg.sender, withdrawAmount);
+        }
 
         emit Withdrawn(msg.sender, token, withdrawAmount);
     }
@@ -241,4 +285,9 @@ contract VaultManager is AccessControl, ReentrancyGuard, Pausable {
     function unpause() external onlyRole(DEFAULT_ADMIN_ROLE) {
         _unpause();
     }
+
+    /**
+     * @notice Allow contract to receive native tokens
+     */
+    receive() external payable {}
 }

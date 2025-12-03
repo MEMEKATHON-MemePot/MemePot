@@ -1,10 +1,15 @@
+"use client";
+
 import { useEffect, useRef, useState } from "react";
+import { parseUnits } from "viem";
 import TransactionProgressModal from "~~/components/TransactionProgressModal";
+import { useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
 
 interface Vault {
   id: string;
   name: string;
   token: string;
+  tokenContract: string;
   icon: string;
   maxPrize: string;
   baseAPR: string;
@@ -12,13 +17,23 @@ interface Vault {
   totalDeposits: string;
   chain: string;
   volume24h: string;
+  decimals: number;
+  isNative?: boolean;
 }
+
+// Token addresses and config
+const TOKENS: { [key: string]: { address: `0x${string}`; decimals: number } } = {
+  USDT: { address: "0x0f4eAD391dff7f730E2D9247A3D964D2724dF665", decimals: 6 },
+  USDC: { address: "0x2077cB638513369254060b8d488Dd23cD0a97837", decimals: 6 },
+};
+
+const VAULT_MANAGER_ADDRESS = "0x1eB771E8620582AAc92700Dd7b55451De529E760" as `0x${string}`;
 
 export default function VaultsTable() {
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState<"tvl" | "apy" | "volume">("tvl");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [displayCount, setDisplayCount] = useState(8);
+  const [displayCount, setDisplayCount] = useState(3);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedVault, setSelectedVault] = useState<Vault | null>(null);
   const [depositAmount, setDepositAmount] = useState("");
@@ -29,6 +44,11 @@ export default function VaultsTable() {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const observerRef = useRef<HTMLDivElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
+
+  // Blockchain write hooks
+  const { writeContractAsync: writeVault } = useScaffoldWriteContract("VaultManager");
+  const { writeContractAsync: writeUSDT } = useScaffoldWriteContract("USDT");
+  const { writeContractAsync: writeUSDC } = useScaffoldWriteContract("USDC");
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -66,7 +86,7 @@ export default function VaultsTable() {
         if (entries[0].isIntersecting && !isLoading && displayCount < vaults.length) {
           setIsLoading(true);
           setTimeout(() => {
-            setDisplayCount(prev => Math.min(prev + 8, vaults.length));
+            setDisplayCount(prev => Math.min(prev + 3, vaults.length));
             setIsLoading(false);
           }, 500);
         }
@@ -92,6 +112,7 @@ export default function VaultsTable() {
       id: "1",
       name: "Prize USDT",
       token: "USDT",
+      tokenContract: "USDT",
       icon: "💵",
       maxPrize: "Up to $50,000",
       baseAPR: "4.2",
@@ -99,11 +120,14 @@ export default function VaultsTable() {
       totalDeposits: "$3,200,000",
       chain: "Memecore",
       volume24h: "$890,123",
+      decimals: 6,
+      isNative: false,
     },
     {
       id: "2",
       name: "Prize USDC",
       token: "USDC",
+      tokenContract: "USDC",
       icon: "💎",
       maxPrize: "Up to $75,000",
       baseAPR: "5.1",
@@ -111,174 +135,23 @@ export default function VaultsTable() {
       totalDeposits: "$1,890,000",
       chain: "Memecore",
       volume24h: "$4,567,890",
+      decimals: 6,
+      isNative: false,
     },
     {
       id: "3",
-      name: "Prize WETH",
-      token: "WETH",
-      icon: "⚡",
+      name: "Prize MEME",
+      token: "MEME",
+      tokenContract: "NATIVE",
+      icon: "🔥",
       maxPrize: "Up to $100,000",
       baseAPR: "3.8",
       ticketAPR: "2.5",
       totalDeposits: "$5,120,000",
       chain: "Memecore",
       volume24h: "$1,234,567",
-    },
-    {
-      id: "4",
-      name: "Prize DAI",
-      token: "DAI",
-      icon: "🌟",
-      maxPrize: "Up to $40,000",
-      baseAPR: "7.9",
-      ticketAPR: "4.5",
-      totalDeposits: "$780,000",
-      chain: "Memecore",
-      volume24h: "$3,456,789",
-    },
-    {
-      id: "5",
-      name: "Prize WBTC",
-      token: "WBTC",
-      icon: "🔶",
-      maxPrize: "Up to $120,000",
-      baseAPR: "6.5",
-      ticketAPR: "3.0",
-      totalDeposits: "$2,340,000",
-      chain: "Memecore",
-      volume24h: "$2,345,678",
-    },
-    {
-      id: "6",
-      name: "Prize MATIC",
-      token: "MATIC",
-      icon: "🟣",
-      maxPrize: "Up to $35,000",
-      baseAPR: "3.5",
-      ticketAPR: "2.2",
-      totalDeposits: "$6,450,000",
-      chain: "Memecore",
-      volume24h: "$678,901",
-    },
-    {
-      id: "7",
-      name: "Prize LINK",
-      token: "LINK",
-      icon: "🔗",
-      maxPrize: "Up to $60,000",
-      baseAPR: "5.8",
-      ticketAPR: "3.8",
-      totalDeposits: "$4,890,000",
-      chain: "Memecore",
-      volume24h: "$5,789,012",
-    },
-    {
-      id: "8",
-      name: "Prize UNI",
-      token: "UNI",
-      icon: "🦄",
-      maxPrize: "Up to $55,000",
-      baseAPR: "8.3",
-      ticketAPR: "5.5",
-      totalDeposits: "$1,340,000",
-      chain: "Memecore",
-      volume24h: "$1,456,789",
-    },
-    {
-      id: "9",
-      name: "Prize AAVE",
-      token: "AAVE",
-      icon: "👻",
-      maxPrize: "Up to $65,000",
-      baseAPR: "4.7",
-      ticketAPR: "3.1",
-      totalDeposits: "$2,890,000",
-      chain: "Memecore",
-      volume24h: "$1,890,234",
-    },
-    {
-      id: "10",
-      name: "Prize SUSHI",
-      token: "SUSHI",
-      icon: "🍣",
-      maxPrize: "Up to $45,000",
-      baseAPR: "6.2",
-      ticketAPR: "4.0",
-      totalDeposits: "$1,560,000",
-      chain: "Memecore",
-      volume24h: "$2,123,456",
-    },
-    {
-      id: "11",
-      name: "Prize CRV",
-      token: "CRV",
-      icon: "🌀",
-      maxPrize: "Up to $50,000",
-      baseAPR: "5.5",
-      ticketAPR: "3.5",
-      totalDeposits: "$2,120,000",
-      chain: "Memecore",
-      volume24h: "$1,567,890",
-    },
-    {
-      id: "12",
-      name: "Prize SNX",
-      token: "SNX",
-      icon: "⚙️",
-      maxPrize: "Up to $55,000",
-      baseAPR: "7.1",
-      ticketAPR: "4.8",
-      totalDeposits: "$1,780,000",
-      chain: "Memecore",
-      volume24h: "$2,890,123",
-    },
-    {
-      id: "13",
-      name: "Prize COMP",
-      token: "COMP",
-      icon: "🏦",
-      maxPrize: "Up to $70,000",
-      baseAPR: "4.9",
-      ticketAPR: "3.3",
-      totalDeposits: "$3,450,000",
-      chain: "Memecore",
-      volume24h: "$3,234,567",
-    },
-    {
-      id: "14",
-      name: "Prize MKR",
-      token: "MKR",
-      icon: "🎯",
-      maxPrize: "Up to $80,000",
-      baseAPR: "5.3",
-      ticketAPR: "3.6",
-      totalDeposits: "$4,120,000",
-      chain: "Memecore",
-      volume24h: "$4,123,456",
-    },
-    {
-      id: "15",
-      name: "Prize YFI",
-      token: "YFI",
-      icon: "💙",
-      maxPrize: "Up to $90,000",
-      baseAPR: "6.8",
-      ticketAPR: "4.2",
-      totalDeposits: "$3,890,000",
-      chain: "Memecore",
-      volume24h: "$3,678,901",
-    },
-    {
-      id: "16",
-      name: "Prize BAL",
-      token: "BAL",
-      icon: "⚖️",
-      maxPrize: "Up to $48,000",
-      baseAPR: "5.9",
-      ticketAPR: "3.9",
-      totalDeposits: "$2,340,000",
-      chain: "Memecore",
-      volume24h: "$2,456,789",
+      decimals: 18,
+      isNative: true,
     },
   ];
 
@@ -332,33 +205,76 @@ export default function VaultsTable() {
     setDepositAmount("1000"); // Example max balance
   };
 
-  const handleDepositSubmit = () => {
-    // Start transaction process
-    setTransactionSteps([
-      { id: "1", label: "Approve Token", status: "processing" },
-      { id: "2", label: "Send Transaction", status: "pending" },
-    ]);
-    setShowTransactionModal(true);
-    handleCloseModal();
+  const handleDepositSubmit = async () => {
+    if (!selectedVault || !depositAmount) {
+      console.error("Missing required data");
+      return;
+    }
 
-    // Simulate transaction steps
-    setTimeout(() => {
-      setTransactionSteps([
-        { id: "1", label: "Approve Token", status: "completed" },
-        { id: "2", label: "Send Transaction", status: "processing" },
-      ]);
+    try {
+      const amount = parseUnits(depositAmount, selectedVault.decimals);
 
-      setTimeout(() => {
+      if (selectedVault.isNative) {
+        // Native token deposit (MEME) - no approval needed
+        setTransactionSteps([{ id: "1", label: "Deposit Native Token", status: "processing" }]);
+        setShowTransactionModal(true);
+        handleCloseModal();
+
+        // Call depositNative with value
+        await writeVault({
+          functionName: "depositNative",
+          value: amount,
+        });
+
+        setTransactionSteps([{ id: "1", label: "Deposit Native Token", status: "completed" }]);
+
+        setTimeout(() => {
+          setShowTransactionModal(false);
+        }, 1500);
+      } else {
+        // ERC20 token deposit (USDT, USDC)
+        setTransactionSteps([
+          { id: "1", label: "Approve Token", status: "processing" },
+          { id: "2", label: "Deposit to Vault", status: "pending" },
+        ]);
+        setShowTransactionModal(true);
+        handleCloseModal();
+
+        const tokenInfo = TOKENS[selectedVault.token];
+        const writeToken = selectedVault.tokenContract === "USDT" ? writeUSDT : writeUSDC;
+
+        // Step 1: Approve token
+        await writeToken({
+          functionName: "approve",
+          args: [VAULT_MANAGER_ADDRESS, amount],
+        });
+
         setTransactionSteps([
           { id: "1", label: "Approve Token", status: "completed" },
-          { id: "2", label: "Send Transaction", status: "completed" },
+          { id: "2", label: "Deposit to Vault", status: "processing" },
+        ]);
+
+        // Step 2: Deposit to vault
+        await writeVault({
+          functionName: "deposit",
+          args: [tokenInfo.address, amount],
+        });
+
+        setTransactionSteps([
+          { id: "1", label: "Approve Token", status: "completed" },
+          { id: "2", label: "Deposit to Vault", status: "completed" },
         ]);
 
         setTimeout(() => {
           setShowTransactionModal(false);
         }, 1500);
-      }, 2000);
-    }, 2000);
+      }
+    } catch (error) {
+      console.error("Transaction failed:", error);
+      setTransactionSteps(prev =>
+        prev.map(step => (step.status === "processing" ? { ...step, status: "failed" as const } : step)),
+      );
+    }
   };
 
   const calculateEstimatedTickets = (amount: string) => {
@@ -646,7 +562,7 @@ export default function VaultsTable() {
                   : "Enter an amount"}
               </button>
 
-              {depositAmount && parseFloat(depositAmount) > 0 && (
+              {depositAmount && parseFloat(depositAmount) > 0 && !selectedVault.isNative && (
                 <button
                   onClick={handleDepositSubmit}
                   className="w-full py-3 bg-[#AD47FF]/10 border border-[#AD47FF]/30 rounded-xl text-[#AD47FF] font-semibold text-sm hover:bg-[#AD47FF]/20 transition-all cursor-pointer whitespace-nowrap"
@@ -758,7 +674,7 @@ export default function VaultsTable() {
       )}
 
       {/* End Message */}
-      {displayCount >= sortedVaults.length && sortedVaults.length > 8 && (
+      {displayCount >= sortedVaults.length && sortedVaults.length > 3 && (
         <div className="flex justify-center py-6">
           <span className="text-sm text-gray-500">All vaults loaded</span>
         </div>

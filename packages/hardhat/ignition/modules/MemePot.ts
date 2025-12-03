@@ -53,6 +53,10 @@ const MemePotModule = buildModule("MemePotModule", m => {
   // Create vaults for all 16 tokens
   m.call(vaultManager, "createVault", [usdt, 420, 280, "1000000000000"]); // USDT: 4.2% + 2.8%, 1M max
   m.call(vaultManager, "createVault", [usdc, 510, 320, "1000000000000"]); // USDC: 5.1% + 3.2%, 1M max
+
+  // Create native MEME token vault
+  const NATIVE_TOKEN = "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE";
+  m.call(vaultManager, "createVault", [NATIVE_TOKEN, 380, 250, "1000000000000000000000"]); // MEME: 3.8% + 2.5%, 1000 max
   m.call(vaultManager, "createVault", [weth, 380, 250, "1000000000000000000000"]); // WETH: 3.8% + 2.5%, 1000 max
   m.call(vaultManager, "createVault", [dai, 790, 450, "1000000000000000000000000"]); // DAI: 7.9% + 4.5%, 1M max
   m.call(vaultManager, "createVault", [matic, 650, 380, "5000000000000000000000000"]); // MATIC: 6.5% + 3.8%, 5M max

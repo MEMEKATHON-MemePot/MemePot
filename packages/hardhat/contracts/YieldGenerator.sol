@@ -311,4 +311,9 @@ contract YieldGenerator is AccessControl, ReentrancyGuard, Pausable {
     function unpause() external onlyRole(DEFAULT_ADMIN_ROLE) {
         _unpause();
     }
+
+    /**
+     * @notice Allow contract to receive native tokens
+     */
+    receive() external payable {}
 }
