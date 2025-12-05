@@ -2,21 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-
-interface PrizePool {
-  id: string;
-  name: string;
-  totalPrize: string;
-  currency: string;
-  frequency: string;
-  duration: string;
-  nextDraw: number;
-  userTickets: number;
-  winChance: string;
-  participants: number;
-  icon: string;
-  gradient: string;
-}
+import { PrizePool } from "./PrizePoolsSection";
 
 interface PrizePoolCardProps {
   pool: PrizePool;
@@ -84,7 +70,7 @@ export default function PrizePoolCard({ pool }: PrizePoolCardProps) {
         <div className="flex items-start justify-between">
           <div className="flex-1">
             <h3 className="text-xl font-bold text-white mb-2 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-purple-400 group-hover:to-pink-400 group-hover:bg-clip-text transition-all">
-              {pool.name}
+              {pool.name} #{pool.poolNum}
             </h3>
             <div className="flex items-center gap-2">
               <span className="px-3 py-1 bg-purple-500/20 border border-purple-500/40 rounded-full text-xs text-purple-300 font-semibold">
@@ -146,11 +132,11 @@ export default function PrizePoolCard({ pool }: PrizePoolCardProps) {
         <div className="grid grid-cols-2 gap-4">
           <div className="bg-[#0a0118]/40 rounded-lg p-4 border border-purple-500/20">
             <p className="text-xs text-gray-500 mb-1">Your Tickets</p>
-            <p className="text-xl font-bold text-white">{pool.userTickets.toLocaleString()}</p>
+            <p className="text-xl font-bold text-white">userInfo에서 가져와</p>
           </div>
           <div className="bg-[#0a0118]/40 rounded-lg p-4 border border-purple-500/20">
             <p className="text-xs text-gray-500 mb-1">Win Chance</p>
-            <p className="text-xl font-bold text-green-400">{pool.winChance}</p>
+            <p className="text-xl font-bold text-green-400">계산해야됨</p>
           </div>
         </div>
 

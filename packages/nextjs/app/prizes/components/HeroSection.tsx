@@ -1,7 +1,5 @@
 "use client";
 
-import Link from "next/link";
-
 export default function HeroSection() {
   return (
     <section className="relative pt-32 pb-20 px-6">
@@ -53,37 +51,9 @@ export default function HeroSection() {
           </h1>
 
           <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-            Your deposit is <span className="text-green-400 font-semibold">always safe</span>. Win prizes{" "}
-            <span className="text-cyan-400 font-semibold">24/7, 365 days</span> with our no-loss lottery model.
+            Your deposit is <span className="text-green-400 font-semibold">always safe</span>. <br />
+            Win prizes <span className="text-cyan-400 font-semibold">24/7, 365 days</span> with our Event pool.
           </p>
-
-          {/* Trust Badges */}
-          <div className="flex flex-wrap items-center justify-center gap-6 pt-4">
-            <div className="flex items-center gap-2 px-4 py-2 bg-green-500/10 border border-green-500/30 rounded-lg">
-              <i className="ri-shield-check-fill text-green-400 text-xl"></i>
-              <span className="text-green-400 font-semibold text-sm">100% Safe</span>
-            </div>
-            <div className="flex items-center gap-2 px-4 py-2 bg-cyan-500/10 border border-cyan-500/30 rounded-lg">
-              <i className="ri-lock-fill text-cyan-400 text-xl"></i>
-              <span className="text-cyan-400 font-semibold text-sm">No-Loss Model</span>
-            </div>
-            <div className="flex items-center gap-2 px-4 py-2 bg-purple-500/10 border border-purple-500/30 rounded-lg">
-              <i className="ri-trophy-fill text-purple-400 text-xl"></i>
-              <span className="text-purple-400 font-semibold text-sm">Daily Prizes</span>
-            </div>
-          </div>
-        </div>
-
-        {/* CTA Button */}
-        <div className="flex justify-center">
-          <Link
-            href="/vaults"
-            className="group px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 rounded-xl font-bold text-lg transition-all shadow-2xl shadow-purple-500/50 hover:shadow-purple-500/70 hover:scale-105 flex items-center gap-3 whitespace-nowrap"
-          >
-            <i className="ri-flask-line text-2xl"></i>
-            Brew Your Tickets
-            <i className="ri-arrow-right-line text-xl group-hover:translate-x-1 transition-transform"></i>
-          </Link>
         </div>
       </div>
     </section>

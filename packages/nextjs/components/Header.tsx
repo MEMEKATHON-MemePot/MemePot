@@ -24,7 +24,7 @@ export const menuLinks: HeaderMenuLink[] = [
     href: "/staking",
   },
   {
-    label: "Prizes",
+    label: "24/7 event pools",
     href: "/prizes",
   },
   {

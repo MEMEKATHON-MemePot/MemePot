@@ -15,7 +15,7 @@ interface Vault {
   chain: string;
   volume24h: string;
   decimals: number;
-  isNative?: boolean;
+  isNative: boolean;
 }
 
 // Token addresses and config (deployed on Insectarium network - chainId: 43522)

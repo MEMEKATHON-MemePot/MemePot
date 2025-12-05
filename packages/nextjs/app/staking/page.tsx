@@ -31,7 +31,7 @@ export default function Staking() {
                 you want to stake! <br />
                 We&apos;ll reward you with{" "}
                 <span className="text-transparent bg-gradient-to-r from-pink-400 to-pink-500 bg-clip-text font-semibold">
-                  carnival tieckets
+                  carnival tickets
                 </span>{" "}
                 and{" "}
                 <span className="text-transparent bg-gradient-to-r  from-pink-400 to-pink-500 bg-clip-text font-semibold">
