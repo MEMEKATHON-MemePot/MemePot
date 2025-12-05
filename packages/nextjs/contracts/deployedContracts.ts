@@ -7,7 +7,7 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 const deployedContracts = {
   43522: {
     AAVE: {
-      address: "0xa0886A5ef894610f501E5bB87C7251BF86D68cdD",
+      address: "0xf504d800169502a2822311c70aF81687945602e4",
       abi: [
         {
           inputs: [
@@ -458,10 +458,10 @@ const deployedContracts = {
         },
       ],
       inheritedFunctions: {},
-      deployedOnBlock: 2815249,
+      deployedOnBlock: 2815369,
     },
     BAL: {
-      address: "0x046f40102eE4339A176910826ab665dd9c518866",
+      address: "0x76E503806b7a84705F10d5DD39767d302082eC0F",
       abi: [
         {
           inputs: [
@@ -912,10 +912,10 @@ const deployedContracts = {
         },
       ],
       inheritedFunctions: {},
-      deployedOnBlock: 2815252,
+      deployedOnBlock: 2815371,
     },
     COMP: {
-      address: "0x14Ea60A2962Ac8fc1cBD6607a13dC4012C8E0E06",
+      address: "0x76E468b07844E17358953c904A4dc270e1e526e6",
       abi: [
         {
           inputs: [
@@ -1366,10 +1366,10 @@ const deployedContracts = {
         },
       ],
       inheritedFunctions: {},
-      deployedOnBlock: 2815248,
+      deployedOnBlock: 2815368,
     },
     CRV: {
-      address: "0xAC918D907293d7d9Df5e16bE43b62009b8c970D3",
+      address: "0x626623cc6aa798c3419B3309978c5d1537c74834",
       abi: [
         {
           inputs: [
@@ -1820,10 +1820,10 @@ const deployedContracts = {
         },
       ],
       inheritedFunctions: {},
-      deployedOnBlock: 2815253,
+      deployedOnBlock: 2815372,
     },
     DAI: {
-      address: "0x2991B61613CeE6b6911507dA6A698Be1299bC6ec",
+      address: "0x83164f118f5AD510f7Be040274FeEbbA43d412b3",
       abi: [
         {
           inputs: [
@@ -2274,10 +2274,10 @@ const deployedContracts = {
         },
       ],
       inheritedFunctions: {},
-      deployedOnBlock: 2815243,
+      deployedOnBlock: 2815363,
     },
     LINK: {
-      address: "0x5a5aC193fEa6384f23e16881c79476b9E290dF93",
+      address: "0x6ae282Ffe85741BbeD4943aa23ED3b11a3fb7A92",
       abi: [
         {
           inputs: [
@@ -2728,10 +2728,10 @@ const deployedContracts = {
         },
       ],
       inheritedFunctions: {},
-      deployedOnBlock: 2815245,
+      deployedOnBlock: 2815365,
     },
     MATIC: {
-      address: "0x5994e2437453942186BBe8faCB62eF7248168DF3",
+      address: "0xf29485B128F44F7Ad5F33654da37275472BaadF0",
       abi: [
         {
           inputs: [
@@ -3182,10 +3182,10 @@ const deployedContracts = {
         },
       ],
       inheritedFunctions: {},
-      deployedOnBlock: 2815244,
+      deployedOnBlock: 2815364,
     },
     MKR: {
-      address: "0x80754971Ff28894fc008F8656584fD01d3cAE9b3",
+      address: "0xE88b07A04C1dea2119A6F29842B20D7c6a00b170",
       abi: [
         {
           inputs: [
@@ -3636,10 +3636,10 @@ const deployedContracts = {
         },
       ],
       inheritedFunctions: {},
-      deployedOnBlock: 2815246,
+      deployedOnBlock: 2815366,
     },
     PriceOracle: {
-      address: "0x71d1E51EA385Fa8a57cEf4f4ec6d21cc08aDa80b",
+      address: "0xd9aE83c0A77EeE249FA381F75F860375EAAec350",
       abi: [
         {
           inputs: [],
@@ -4185,10 +4185,10 @@ const deployedContracts = {
         revokeRole: "@openzeppelin/contracts/access/AccessControl.sol",
         supportsInterface: "@openzeppelin/contracts/access/AccessControl.sol",
       },
-      deployedOnBlock: 2815260,
+      deployedOnBlock: 2815379,
     },
     PrizePoolManager: {
-      address: "0xE84504EaF5cB77E4f540EEa07529ab9478DA738d",
+      address: "0x9E2181e0aA7b9fd3b8Ccbc131de76e9fD5EEaaf3",
       abi: [
         {
           inputs: [
@@ -5417,10 +5417,10 @@ const deployedContracts = {
         supportsInterface: "@openzeppelin/contracts/access/AccessControl.sol",
         paused: "@openzeppelin/contracts/utils/Pausable.sol",
       },
-      deployedOnBlock: 2815262,
+      deployedOnBlock: 2815381,
     },
     RewardsManager: {
-      address: "0xa042597544F019aB3e2811d4049a4053F9262cea",
+      address: "0x8e86f7546bc7EfA049CA2D871022F819090c8e93",
       abi: [
         {
           inputs: [
@@ -6158,10 +6158,10 @@ const deployedContracts = {
         supportsInterface: "@openzeppelin/contracts/access/AccessControl.sol",
         paused: "@openzeppelin/contracts/utils/Pausable.sol",
       },
-      deployedOnBlock: 2815259,
+      deployedOnBlock: 2815378,
     },
     SNX: {
-      address: "0xACd194b4b0F02bFe2246d1f47a86af5ABFAa6e9f",
+      address: "0x8016A05626af8fCa1C7F11ddb0819c337002992e",
       abi: [
         {
           inputs: [
@@ -6612,10 +6612,10 @@ const deployedContracts = {
         },
       ],
       inheritedFunctions: {},
-      deployedOnBlock: 2815254,
+      deployedOnBlock: 2815373,
     },
     SUSHI: {
-      address: "0x79b76eCDd4c75C7e867dFC51FFdFB1e195aFe624",
+      address: "0x8fc8dDD57A2b1e9859E6538765495B8BD7667866",
       abi: [
         {
           inputs: [
@@ -7066,10 +7066,10 @@ const deployedContracts = {
         },
       ],
       inheritedFunctions: {},
-      deployedOnBlock: 2815255,
+      deployedOnBlock: 2815374,
     },
     TicketNFT: {
-      address: "0xA99B0789f081dFD8c76041bA5890284Ad7e03AB0",
+      address: "0x91f41bd34D08Eed953349891a686920ddBd81477",
       abi: [
         {
           inputs: [
@@ -8134,10 +8134,10 @@ const deployedContracts = {
         revokeRole: "@openzeppelin/contracts/access/AccessControl.sol",
         paused: "@openzeppelin/contracts/utils/Pausable.sol",
       },
-      deployedOnBlock: 2815257,
+      deployedOnBlock: 2815376,
     },
     UNI: {
-      address: "0x132d56C2340b85507c7d9098894D27eB8c2614C7",
+      address: "0x35B62B7CB088e23b9a5cBb3d67dcF10016857e87",
       abi: [
         {
           inputs: [
@@ -8588,10 +8588,10 @@ const deployedContracts = {
         },
       ],
       inheritedFunctions: {},
-      deployedOnBlock: 2815256,
+      deployedOnBlock: 2815375,
     },
     USDC: {
-      address: "0xd25A108F51BDcBC2A695edb5c6F66Cb2989754E1",
+      address: "0x7333D34FB1e244808a0456B0BD79FCe7cCA4E624",
       abi: [
         {
           inputs: [
@@ -9042,10 +9042,10 @@ const deployedContracts = {
         },
       ],
       inheritedFunctions: {},
-      deployedOnBlock: 2815241,
+      deployedOnBlock: 2815361,
     },
     USDT: {
-      address: "0x69df91Cf98a64fA52144F245fB4B3075308C3169",
+      address: "0x604E32920693A996B47BAaA54A6a49782c6aA585",
       abi: [
         {
           inputs: [
@@ -9496,10 +9496,10 @@ const deployedContracts = {
         },
       ],
       inheritedFunctions: {},
-      deployedOnBlock: 2815240,
+      deployedOnBlock: 2815360,
     },
     VaultManager: {
-      address: "0x9e99A4aE1a462EEFaB306bB4e5a6A40D7570530d",
+      address: "0xa743150a1ddCa12Dda6d0a5c633cf691Ff85C013",
       abi: [
         {
           inputs: [],
@@ -10643,10 +10643,10 @@ const deployedContracts = {
         supportsInterface: "@openzeppelin/contracts/access/AccessControl.sol",
         paused: "@openzeppelin/contracts/utils/Pausable.sol",
       },
-      deployedOnBlock: 2815258,
+      deployedOnBlock: 2815377,
     },
     WBTC: {
-      address: "0x5F9Ec12dEC7DdeB70e975d080E02c37261165AD0",
+      address: "0xE2b15Ac45937Ef439CB99f1af6fc9B24C36551b9",
       abi: [
         {
           inputs: [
@@ -11097,10 +11097,10 @@ const deployedContracts = {
         },
       ],
       inheritedFunctions: {},
-      deployedOnBlock: 2815250,
+      deployedOnBlock: 2815370,
     },
     WETH: {
-      address: "0x0Ba7a599c8cDc68Ba2FFF6DC9084A1C84bF9Da54",
+      address: "0x4D1d12ac8CBdD64A74d36D28390d9EDC508Df18A",
       abi: [
         {
           inputs: [
@@ -11551,10 +11551,10 @@ const deployedContracts = {
         },
       ],
       inheritedFunctions: {},
-      deployedOnBlock: 2815242,
+      deployedOnBlock: 2815362,
     },
     YFI: {
-      address: "0xAc21eC963bEe244655345E880806288386B1Dbdf",
+      address: "0xF7650031951e4E00f50aBA270A4BE1b520ae24bF",
       abi: [
         {
           inputs: [
@@ -12005,10 +12005,10 @@ const deployedContracts = {
         },
       ],
       inheritedFunctions: {},
-      deployedOnBlock: 2815247,
+      deployedOnBlock: 2815367,
     },
     YieldGenerator: {
-      address: "0xBD59e3e7A681354f4E9020E112283ba83dfe79Cc",
+      address: "0xAF787B7827cE2443f8cf09463cD6016D3d83309C",
       abi: [
         {
           inputs: [],
@@ -12932,7 +12932,7 @@ const deployedContracts = {
         supportsInterface: "@openzeppelin/contracts/access/AccessControl.sol",
         paused: "@openzeppelin/contracts/utils/Pausable.sol",
       },
-      deployedOnBlock: 2815261,
+      deployedOnBlock: 2815380,
     },
   },
 } as const;

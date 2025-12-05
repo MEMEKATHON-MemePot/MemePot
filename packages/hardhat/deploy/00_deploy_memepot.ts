@@ -136,6 +136,9 @@ const deployMemePot: DeployFunction = async function (hre: HardhatRuntimeEnviron
   // Create vaults with different APRs
   console.log("\n🏦 Creating Vaults...");
 
+  // Native token address constant
+  const NATIVE_TOKEN = "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE";
+
   const vaultConfigs = [
     { id: 1, name: "Tether USD Vault", symbol: "USDT", apr: 700, chain: "Ethereum", decimals: 6, isNative: false },
     { id: 2, name: "USD Coin Vault", symbol: "USDC", apr: 830, chain: "Ethereum", decimals: 6, isNative: false },
@@ -193,6 +196,13 @@ const deployMemePot: DeployFunction = async function (hre: HardhatRuntimeEnviron
     console.log(`✅ ${config.symbol} Vault: ${config.apr / 100}% APR`);
   }
 
+  // Create Native MEME Vault
+  await VaultManager.createVault(17, "Native MEME Vault", "MEME", NATIVE_TOKEN, 550, "Memecore", 18, true);
+  console.log(`✅ MEME Vault: 5.5% APR (Native)`);
+
+  // Add to deployedTokens for later use
+  deployedTokens["MEME"] = { address: NATIVE_TOKEN };
+
   // Configure yield for all tokens
   console.log("\n📈 Configuring Yield...");
 
@@ -203,6 +213,12 @@ const deployMemePot: DeployFunction = async function (hre: HardhatRuntimeEnviron
     await YieldGenerator.configureYield(deployedTokens[config.symbol].address, baseAPR, ticketAPR);
     console.log(`✅ ${config.symbol} Yield configured: ${baseAPR / 100}% Base + ${ticketAPR / 100}% Ticket`);
   }
+
+  // Configure yield for Native MEME
+  const memeBaseAPR = Math.floor(550 * 0.6);
+  const memeTicketAPR = 550 - memeBaseAPR;
+  await YieldGenerator.configureYield(NATIVE_TOKEN, memeBaseAPR, memeTicketAPR);
+  console.log(`✅ MEME Yield configured: ${memeBaseAPR / 100}% Base + ${memeTicketAPR / 100}% Ticket`);
 
   // Set prices
   console.log("\n💰 Setting Token Prices...");
@@ -224,6 +240,7 @@ const deployMemePot: DeployFunction = async function (hre: HardhatRuntimeEnviron
     SNX: "230000000", // $2.30
     SUSHI: "8500000", // $0.85
     UNI: "620000000", // $6.20
+    MEME: "5000000", // $0.05
   };
 
   for (const [symbol, price] of Object.entries(prices)) {
