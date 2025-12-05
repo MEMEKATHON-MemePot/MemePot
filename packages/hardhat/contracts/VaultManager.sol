@@ -284,6 +284,21 @@ contract VaultManager is AccessControl, ReentrancyGuard, Pausable {
     }
 
     /**
+     * @notice Get all vault information for all supported tokens
+     * @return Array of VaultInfo structs for all vaults
+     */
+    function getAllVaultInfos() external view returns (VaultInfo[] memory) {
+        uint256 length = supportedTokens.length;
+        VaultInfo[] memory infos = new VaultInfo[](length);
+
+        for (uint256 i = 0; i < length; i++) {
+            infos[i] = vaults[supportedTokens[i]];
+        }
+
+        return infos;
+    }
+
+    /**
      * @notice Set YieldGenerator contract address
      * @param _yieldGenerator The YieldGenerator address
      */

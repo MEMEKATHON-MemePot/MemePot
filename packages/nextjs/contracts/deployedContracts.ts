@@ -1788,7 +1788,7 @@ const deployedContracts = {
       deployedOnBlock: 2816960,
     },
     RewardsManager: {
-      address: "0xFfa7A939b2A3F835D295E75FEfc0bCd08e1F1Dbe",
+      address: "0xCb094f55148659a9291Ff1B1F240a06Ef939D1eb",
       abi: [
         {
           inputs: [
@@ -2526,7 +2526,7 @@ const deployedContracts = {
         supportsInterface: "@openzeppelin/contracts/access/AccessControl.sol",
         paused: "@openzeppelin/contracts/utils/Pausable.sol",
       },
-      deployedOnBlock: 2816957,
+      deployedOnBlock: 2817152,
     },
     TicketNFT: {
       address: "0x18CcC944370c23d124f08C25f645C5082176ceED",
@@ -4505,7 +4505,7 @@ const deployedContracts = {
       deployedOnBlock: 2816953,
     },
     VaultManager: {
-      address: "0x5D998472F48FAecD46BA3619e982507D257E3801",
+      address: "0x378891c0455CB7b9348537610Be87f00f15Feb70",
       abi: [
         {
           inputs: [],
@@ -4992,6 +4992,71 @@ const deployedContracts = {
           name: "depositNative",
           outputs: [],
           stateMutability: "payable",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "getAllVaultInfos",
+          outputs: [
+            {
+              components: [
+                {
+                  internalType: "uint256",
+                  name: "id",
+                  type: "uint256",
+                },
+                {
+                  internalType: "string",
+                  name: "name",
+                  type: "string",
+                },
+                {
+                  internalType: "string",
+                  name: "token",
+                  type: "string",
+                },
+                {
+                  internalType: "address",
+                  name: "tokenContract",
+                  type: "address",
+                },
+                {
+                  internalType: "uint256",
+                  name: "apr",
+                  type: "uint256",
+                },
+                {
+                  internalType: "uint256",
+                  name: "totalDeposits",
+                  type: "uint256",
+                },
+                {
+                  internalType: "string",
+                  name: "chain",
+                  type: "string",
+                },
+                {
+                  internalType: "uint256",
+                  name: "volume24h",
+                  type: "uint256",
+                },
+                {
+                  internalType: "uint8",
+                  name: "decimals",
+                  type: "uint8",
+                },
+                {
+                  internalType: "bool",
+                  name: "isNative",
+                  type: "bool",
+                },
+              ],
+              internalType: "struct VaultManager.VaultInfo[]",
+              name: "",
+              type: "tuple[]",
+            },
+          ],
+          stateMutability: "view",
           type: "function",
         },
         {
@@ -5507,7 +5572,7 @@ const deployedContracts = {
         supportsInterface: "@openzeppelin/contracts/access/AccessControl.sol",
         paused: "@openzeppelin/contracts/utils/Pausable.sol",
       },
-      deployedOnBlock: 2816956,
+      deployedOnBlock: 2817151,
     },
     YieldGenerator: {
       address: "0xa21F82feA4228b62840e57318442d055375257D7",

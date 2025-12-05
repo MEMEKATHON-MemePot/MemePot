@@ -24,7 +24,7 @@ const TOKENS: { [key: string]: { address: `0x${string}`; decimals: number } } = 
   USDC: { address: "0x0D651A847C150d0eE1DB767E661E417dB5E2B09a", decimals: 6 },
 };
 
-const VAULT_MANAGER_ADDRESS = "0x5D998472F48FAecD46BA3619e982507D257E3801" as `0x${string}`;
+const VAULT_MANAGER_ADDRESS = "0x378891c0455CB7b9348537610Be87f00f15Feb70" as `0x${string}`;
 
 export default function StakingTable() {
   const [searchTerm, setSearchTerm] = useState("");
