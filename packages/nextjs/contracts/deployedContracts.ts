@@ -7,7 +7,7 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 const deployedContracts = {
   43522: {
     AAVE: {
-      address: "0xF4e9a792ecfbbe2CeD94cCdC2EdE71f43ADf51F1",
+      address: "0xa0886A5ef894610f501E5bB87C7251BF86D68cdD",
       abi: [
         {
           inputs: [
@@ -458,10 +458,10 @@ const deployedContracts = {
         },
       ],
       inheritedFunctions: {},
-      deployedOnBlock: 2786198,
+      deployedOnBlock: 2815249,
     },
     BAL: {
-      address: "0x0AA74f2c91D3E22fFCa5900C4C209d744EC9c615",
+      address: "0x046f40102eE4339A176910826ab665dd9c518866",
       abi: [
         {
           inputs: [
@@ -912,10 +912,10 @@ const deployedContracts = {
         },
       ],
       inheritedFunctions: {},
-      deployedOnBlock: 2786200,
+      deployedOnBlock: 2815252,
     },
     COMP: {
-      address: "0x0Db453Def91c621E114E558850A7DD7962F8dFf4",
+      address: "0x14Ea60A2962Ac8fc1cBD6607a13dC4012C8E0E06",
       abi: [
         {
           inputs: [
@@ -1366,10 +1366,10 @@ const deployedContracts = {
         },
       ],
       inheritedFunctions: {},
-      deployedOnBlock: 2786197,
+      deployedOnBlock: 2815248,
     },
     CRV: {
-      address: "0x4115ecB8e1d2d1b7d68ADDC26ddAAfCEf667DC5F",
+      address: "0xAC918D907293d7d9Df5e16bE43b62009b8c970D3",
       abi: [
         {
           inputs: [
@@ -1820,10 +1820,10 @@ const deployedContracts = {
         },
       ],
       inheritedFunctions: {},
-      deployedOnBlock: 2786201,
+      deployedOnBlock: 2815253,
     },
     DAI: {
-      address: "0xD288279aF067e1e9A2f1098544C2e63590fC4FA8",
+      address: "0x2991B61613CeE6b6911507dA6A698Be1299bC6ec",
       abi: [
         {
           inputs: [
@@ -2274,10 +2274,10 @@ const deployedContracts = {
         },
       ],
       inheritedFunctions: {},
-      deployedOnBlock: 2786192,
+      deployedOnBlock: 2815243,
     },
     LINK: {
-      address: "0xb27002AE6b1487f6b2c98E95b80614EcbEF48143",
+      address: "0x5a5aC193fEa6384f23e16881c79476b9E290dF93",
       abi: [
         {
           inputs: [
@@ -2728,10 +2728,10 @@ const deployedContracts = {
         },
       ],
       inheritedFunctions: {},
-      deployedOnBlock: 2786194,
+      deployedOnBlock: 2815245,
     },
     MATIC: {
-      address: "0x6619154596EC5BED68fE22703334E37941A8c951",
+      address: "0x5994e2437453942186BBe8faCB62eF7248168DF3",
       abi: [
         {
           inputs: [
@@ -3182,10 +3182,10 @@ const deployedContracts = {
         },
       ],
       inheritedFunctions: {},
-      deployedOnBlock: 2786193,
+      deployedOnBlock: 2815244,
     },
     MKR: {
-      address: "0xC41cF30d18dd187ae4855077BC546cB2157eaFfa",
+      address: "0x80754971Ff28894fc008F8656584fD01d3cAE9b3",
       abi: [
         {
           inputs: [
@@ -3636,10 +3636,10 @@ const deployedContracts = {
         },
       ],
       inheritedFunctions: {},
-      deployedOnBlock: 2786195,
+      deployedOnBlock: 2815246,
     },
     PriceOracle: {
-      address: "0x6E1f4Cd4404cd9F298853f01f6A07088Dd92A9eA",
+      address: "0x71d1E51EA385Fa8a57cEf4f4ec6d21cc08aDa80b",
       abi: [
         {
           inputs: [],
@@ -4185,10 +4185,10 @@ const deployedContracts = {
         revokeRole: "@openzeppelin/contracts/access/AccessControl.sol",
         supportsInterface: "@openzeppelin/contracts/access/AccessControl.sol",
       },
-      deployedOnBlock: 2786208,
+      deployedOnBlock: 2815260,
     },
     PrizePoolManager: {
-      address: "0xd13b2eE974E1219736F4666656cB6744d6bd038E",
+      address: "0xE84504EaF5cB77E4f540EEa07529ab9478DA738d",
       abi: [
         {
           inputs: [
@@ -5417,10 +5417,10 @@ const deployedContracts = {
         supportsInterface: "@openzeppelin/contracts/access/AccessControl.sol",
         paused: "@openzeppelin/contracts/utils/Pausable.sol",
       },
-      deployedOnBlock: 2814801,
+      deployedOnBlock: 2815262,
     },
     RewardsManager: {
-      address: "0x212205334fbfCAb0fD33e2fC7efD0E777297264F",
+      address: "0xa042597544F019aB3e2811d4049a4053F9262cea",
       abi: [
         {
           inputs: [
@@ -6158,10 +6158,10 @@ const deployedContracts = {
         supportsInterface: "@openzeppelin/contracts/access/AccessControl.sol",
         paused: "@openzeppelin/contracts/utils/Pausable.sol",
       },
-      deployedOnBlock: 2814798,
+      deployedOnBlock: 2815259,
     },
     SNX: {
-      address: "0x553f17C52b1E875Fb873a7b5B4f6Ee92F2d3157E",
+      address: "0xACd194b4b0F02bFe2246d1f47a86af5ABFAa6e9f",
       abi: [
         {
           inputs: [
@@ -6612,10 +6612,10 @@ const deployedContracts = {
         },
       ],
       inheritedFunctions: {},
-      deployedOnBlock: 2786202,
+      deployedOnBlock: 2815254,
     },
     SUSHI: {
-      address: "0xEf4Da0049B0Bf455Cbfd60629F686F4453BaD250",
+      address: "0x79b76eCDd4c75C7e867dFC51FFdFB1e195aFe624",
       abi: [
         {
           inputs: [
@@ -7066,10 +7066,10 @@ const deployedContracts = {
         },
       ],
       inheritedFunctions: {},
-      deployedOnBlock: 2786203,
+      deployedOnBlock: 2815255,
     },
     TicketNFT: {
-      address: "0xbfbd37464b9a9d3f401C73964C4Fd8495Dc83cc7",
+      address: "0xA99B0789f081dFD8c76041bA5890284Ad7e03AB0",
       abi: [
         {
           inputs: [
@@ -8134,10 +8134,10 @@ const deployedContracts = {
         revokeRole: "@openzeppelin/contracts/access/AccessControl.sol",
         paused: "@openzeppelin/contracts/utils/Pausable.sol",
       },
-      deployedOnBlock: 2786205,
+      deployedOnBlock: 2815257,
     },
     UNI: {
-      address: "0x0dc97E2A97Aa4B0783F99100656978896C1e5921",
+      address: "0x132d56C2340b85507c7d9098894D27eB8c2614C7",
       abi: [
         {
           inputs: [
@@ -8588,10 +8588,10 @@ const deployedContracts = {
         },
       ],
       inheritedFunctions: {},
-      deployedOnBlock: 2786204,
+      deployedOnBlock: 2815256,
     },
     USDC: {
-      address: "0x7C81888a24b92C7083507dD0747bcC190102418A",
+      address: "0xd25A108F51BDcBC2A695edb5c6F66Cb2989754E1",
       abi: [
         {
           inputs: [
@@ -9042,10 +9042,10 @@ const deployedContracts = {
         },
       ],
       inheritedFunctions: {},
-      deployedOnBlock: 2786190,
+      deployedOnBlock: 2815241,
     },
     USDT: {
-      address: "0x2F665Cec0DaC0E41112f4eB575077df443B522B1",
+      address: "0x69df91Cf98a64fA52144F245fB4B3075308C3169",
       abi: [
         {
           inputs: [
@@ -9496,10 +9496,10 @@ const deployedContracts = {
         },
       ],
       inheritedFunctions: {},
-      deployedOnBlock: 2786189,
+      deployedOnBlock: 2815240,
     },
     VaultManager: {
-      address: "0xab1F47cD2BCe0e960e5b4718190d7BB1cE013A30",
+      address: "0x9e99A4aE1a462EEFaB306bB4e5a6A40D7570530d",
       abi: [
         {
           inputs: [],
@@ -10052,7 +10052,149 @@ const deployedContracts = {
               type: "address",
             },
           ],
-          name: "getVaultInfo",
+          name: "getVaultInfo1",
+          outputs: [
+            {
+              components: [
+                {
+                  internalType: "uint256",
+                  name: "id",
+                  type: "uint256",
+                },
+                {
+                  internalType: "string",
+                  name: "name",
+                  type: "string",
+                },
+                {
+                  internalType: "string",
+                  name: "token",
+                  type: "string",
+                },
+                {
+                  internalType: "address",
+                  name: "tokenContract",
+                  type: "address",
+                },
+                {
+                  internalType: "uint256",
+                  name: "apr",
+                  type: "uint256",
+                },
+                {
+                  internalType: "uint256",
+                  name: "totalDeposits",
+                  type: "uint256",
+                },
+                {
+                  internalType: "string",
+                  name: "chain",
+                  type: "string",
+                },
+                {
+                  internalType: "uint256",
+                  name: "volume24h",
+                  type: "uint256",
+                },
+                {
+                  internalType: "uint8",
+                  name: "decimals",
+                  type: "uint8",
+                },
+                {
+                  internalType: "bool",
+                  name: "isNative",
+                  type: "bool",
+                },
+              ],
+              internalType: "struct VaultManager.VaultInfo",
+              name: "",
+              type: "tuple",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "token",
+              type: "address",
+            },
+          ],
+          name: "getVaultInfo2",
+          outputs: [
+            {
+              components: [
+                {
+                  internalType: "uint256",
+                  name: "id",
+                  type: "uint256",
+                },
+                {
+                  internalType: "string",
+                  name: "name",
+                  type: "string",
+                },
+                {
+                  internalType: "string",
+                  name: "token",
+                  type: "string",
+                },
+                {
+                  internalType: "address",
+                  name: "tokenContract",
+                  type: "address",
+                },
+                {
+                  internalType: "uint256",
+                  name: "apr",
+                  type: "uint256",
+                },
+                {
+                  internalType: "uint256",
+                  name: "totalDeposits",
+                  type: "uint256",
+                },
+                {
+                  internalType: "string",
+                  name: "chain",
+                  type: "string",
+                },
+                {
+                  internalType: "uint256",
+                  name: "volume24h",
+                  type: "uint256",
+                },
+                {
+                  internalType: "uint8",
+                  name: "decimals",
+                  type: "uint8",
+                },
+                {
+                  internalType: "bool",
+                  name: "isNative",
+                  type: "bool",
+                },
+              ],
+              internalType: "struct VaultManager.VaultInfo",
+              name: "",
+              type: "tuple",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "token",
+              type: "address",
+            },
+          ],
+          name: "getVaultInfo3",
           outputs: [
             {
               components: [
@@ -10501,10 +10643,10 @@ const deployedContracts = {
         supportsInterface: "@openzeppelin/contracts/access/AccessControl.sol",
         paused: "@openzeppelin/contracts/utils/Pausable.sol",
       },
-      deployedOnBlock: 2814797,
+      deployedOnBlock: 2815258,
     },
     WBTC: {
-      address: "0x8fd7fC02E8Cab582eC8C72317535E539B3B103B3",
+      address: "0x5F9Ec12dEC7DdeB70e975d080E02c37261165AD0",
       abi: [
         {
           inputs: [
@@ -10955,10 +11097,10 @@ const deployedContracts = {
         },
       ],
       inheritedFunctions: {},
-      deployedOnBlock: 2786199,
+      deployedOnBlock: 2815250,
     },
     WETH: {
-      address: "0x87F9d921f1d66825902d9BF542c3538903E6b1c2",
+      address: "0x0Ba7a599c8cDc68Ba2FFF6DC9084A1C84bF9Da54",
       abi: [
         {
           inputs: [
@@ -11409,10 +11551,10 @@ const deployedContracts = {
         },
       ],
       inheritedFunctions: {},
-      deployedOnBlock: 2786191,
+      deployedOnBlock: 2815242,
     },
     YFI: {
-      address: "0xBE86715Fe5fB0DFbfa3007Af66929bD178a4D973",
+      address: "0xAc21eC963bEe244655345E880806288386B1Dbdf",
       abi: [
         {
           inputs: [
@@ -11863,10 +12005,10 @@ const deployedContracts = {
         },
       ],
       inheritedFunctions: {},
-      deployedOnBlock: 2786196,
+      deployedOnBlock: 2815247,
     },
     YieldGenerator: {
-      address: "0x00BF5d63B262747f986Ae39cA59c3Eeb0831632c",
+      address: "0xBD59e3e7A681354f4E9020E112283ba83dfe79Cc",
       abi: [
         {
           inputs: [],
@@ -12790,7 +12932,7 @@ const deployedContracts = {
         supportsInterface: "@openzeppelin/contracts/access/AccessControl.sol",
         paused: "@openzeppelin/contracts/utils/Pausable.sol",
       },
-      deployedOnBlock: 2814800,
+      deployedOnBlock: 2815261,
     },
   },
 } as const;

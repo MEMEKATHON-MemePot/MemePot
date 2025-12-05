@@ -267,11 +267,29 @@ contract VaultManager is AccessControl, ReentrancyGuard, Pausable {
     }
 
     /**
-     * @notice Get vault information
+     * @notice Get vault information for first token
      * @param token The token address
      * @return VaultInfo struct
      */
-    function getVaultInfo(address token) external view returns (VaultInfo memory) {
+    function getVaultInfo1(address token) external view returns (VaultInfo memory) {
+        return vaults[token];
+    }
+
+    /**
+     * @notice Get vault information for second token
+     * @param token The token address
+     * @return VaultInfo struct
+     */
+    function getVaultInfo2(address token) external view returns (VaultInfo memory) {
+        return vaults[token];
+    }
+
+    /**
+     * @notice Get vault information for third token
+     * @param token The token address
+     * @return VaultInfo struct
+     */
+    function getVaultInfo3(address token) external view returns (VaultInfo memory) {
         return vaults[token];
     }
 
