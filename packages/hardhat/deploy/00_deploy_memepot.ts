@@ -13,20 +13,6 @@ const deployMemePot: DeployFunction = async function (hre: HardhatRuntimeEnviron
   const tokens = [
     { name: "Tether USD", symbol: "USDT", decimals: 6 },
     { name: "USD Coin", symbol: "USDC", decimals: 6 },
-    { name: "Wrapped Ether", symbol: "WETH", decimals: 18 },
-    { name: "Dai Stablecoin", symbol: "DAI", decimals: 18 },
-    { name: "Wrapped Matic", symbol: "MATIC", decimals: 18 },
-    { name: "ChainLink Token", symbol: "LINK", decimals: 18 },
-    { name: "Maker", symbol: "MKR", decimals: 18 },
-    { name: "yearn.finance", symbol: "YFI", decimals: 18 },
-    { name: "Compound", symbol: "COMP", decimals: 18 },
-    { name: "Aave Token", symbol: "AAVE", decimals: 18 },
-    { name: "Wrapped Bitcoin", symbol: "WBTC", decimals: 8 },
-    { name: "Balancer", symbol: "BAL", decimals: 18 },
-    { name: "Curve DAO Token", symbol: "CRV", decimals: 18 },
-    { name: "Synthetix Network Token", symbol: "SNX", decimals: 18 },
-    { name: "SushiToken", symbol: "SUSHI", decimals: 18 },
-    { name: "Uniswap", symbol: "UNI", decimals: 18 },
   ];
 
   const deployedTokens: { [key: string]: any } = {};
@@ -140,46 +126,8 @@ const deployMemePot: DeployFunction = async function (hre: HardhatRuntimeEnviron
   const NATIVE_TOKEN = "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE";
 
   const vaultConfigs = [
-    { id: 1, name: "Tether USD Vault", symbol: "USDT", apr: 700, chain: "Ethereum", decimals: 6, isNative: false },
-    { id: 2, name: "USD Coin Vault", symbol: "USDC", apr: 830, chain: "Ethereum", decimals: 6, isNative: false },
-    { id: 3, name: "Wrapped Ether Vault", symbol: "WETH", apr: 630, chain: "Ethereum", decimals: 18, isNative: false },
-    { id: 4, name: "Dai Stablecoin Vault", symbol: "DAI", apr: 1240, chain: "Ethereum", decimals: 18, isNative: false },
-    { id: 5, name: "Wrapped Matic Vault", symbol: "MATIC", apr: 1030, chain: "Polygon", decimals: 18, isNative: false },
-    {
-      id: 6,
-      name: "ChainLink Token Vault",
-      symbol: "LINK",
-      apr: 920,
-      chain: "Ethereum",
-      decimals: 18,
-      isNative: false,
-    },
-    { id: 7, name: "Maker Vault", symbol: "MKR", apr: 800, chain: "Ethereum", decimals: 18, isNative: false },
-    { id: 8, name: "yearn.finance Vault", symbol: "YFI", apr: 1130, chain: "Ethereum", decimals: 18, isNative: false },
-    { id: 9, name: "Compound Vault", symbol: "COMP", apr: 970, chain: "Ethereum", decimals: 18, isNative: false },
-    { id: 10, name: "Aave Token Vault", symbol: "AAVE", apr: 890, chain: "Ethereum", decimals: 18, isNative: false },
-    { id: 11, name: "Wrapped Bitcoin Vault", symbol: "WBTC", apr: 680, chain: "Bitcoin", decimals: 8, isNative: false },
-    { id: 12, name: "Balancer Vault", symbol: "BAL", apr: 1060, chain: "Ethereum", decimals: 18, isNative: false },
-    {
-      id: 13,
-      name: "Curve DAO Token Vault",
-      symbol: "CRV",
-      apr: 1150,
-      chain: "Ethereum",
-      decimals: 18,
-      isNative: false,
-    },
-    {
-      id: 14,
-      name: "Synthetix Network Token Vault",
-      symbol: "SNX",
-      apr: 1010,
-      chain: "Ethereum",
-      decimals: 18,
-      isNative: false,
-    },
-    { id: 15, name: "SushiToken Vault", symbol: "SUSHI", apr: 1090, chain: "Ethereum", decimals: 18, isNative: false },
-    { id: 16, name: "Uniswap Vault", symbol: "UNI", apr: 860, chain: "Ethereum", decimals: 18, isNative: false },
+    { id: 1, name: "Tether USD Vault", symbol: "USDT", apr: 100, chain: "Ethereum", decimals: 6, isNative: false },
+    { id: 2, name: "USD Coin Vault", symbol: "USDC", apr: 100, chain: "Ethereum", decimals: 6, isNative: false },
   ];
 
   for (const config of vaultConfigs) {
@@ -197,8 +145,8 @@ const deployMemePot: DeployFunction = async function (hre: HardhatRuntimeEnviron
   }
 
   // Create Native MEME Vault
-  await VaultManager.createVault(17, "Native MEME Vault", "MEME", NATIVE_TOKEN, 550, "Memecore", 18, true);
-  console.log(`✅ MEME Vault: 5.5% APR (Native)`);
+  await VaultManager.createVault(17, "Native MEME Vault", "MEME", NATIVE_TOKEN, 200, "Memecore", 18, true);
+  console.log(`✅ MEME Vault: 2% APR (Native)`);
 
   // Add to deployedTokens for later use
   deployedTokens["MEME"] = { address: NATIVE_TOKEN };
@@ -215,8 +163,8 @@ const deployMemePot: DeployFunction = async function (hre: HardhatRuntimeEnviron
   }
 
   // Configure yield for Native MEME
-  const memeBaseAPR = Math.floor(550 * 0.6);
-  const memeTicketAPR = 550 - memeBaseAPR;
+  const memeBaseAPR = Math.floor(200 * 0.6);
+  const memeTicketAPR = 200 - memeBaseAPR;
   await YieldGenerator.configureYield(NATIVE_TOKEN, memeBaseAPR, memeTicketAPR);
   console.log(`✅ MEME Yield configured: ${memeBaseAPR / 100}% Base + ${memeTicketAPR / 100}% Ticket`);
 
@@ -226,20 +174,6 @@ const deployMemePot: DeployFunction = async function (hre: HardhatRuntimeEnviron
   const prices: { [key: string]: string } = {
     USDT: "100000000", // $1.00
     USDC: "100000000", // $1.00
-    WETH: "350000000000", // $3,500.00
-    DAI: "100000000", // $1.00
-    MATIC: "8500000000", // $85.00
-    LINK: "1450000000", // $14.50
-    MKR: "180000000000", // $1,800.00
-    YFI: "750000000000", // $7,500.00
-    COMP: "5200000000", // $52.00
-    AAVE: "9500000000", // $95.00
-    WBTC: "6800000000000", // $68,000.00
-    BAL: "450000000", // $4.50
-    CRV: "7000000", // $0.70
-    SNX: "230000000", // $2.30
-    SUSHI: "8500000", // $0.85
-    UNI: "620000000", // $6.20
     MEME: "5000000", // $0.05
   };
 
@@ -264,28 +198,12 @@ const deployMemePot: DeployFunction = async function (hre: HardhatRuntimeEnviron
   console.log("✅ Weekly Pool: 343 USDT");
 
   await PrizePoolManager.createPool(
-    "Monthly Meme Jackpot",
-    deployedTokens.USDT.address,
+    "Monthly USDC Jackpot",
+    deployedTokens.USDC.address,
     hre.ethers.parseUnits("1569", 6),
     2,
   );
-  console.log("✅ Monthly Pool: 1,569 USDT");
-
-  await PrizePoolManager.createPool(
-    "Quarterly Lottery",
-    deployedTokens.WETH.address,
-    hre.ethers.parseUnits("8750", 18),
-    3,
-  );
-  console.log("✅ Quarterly Pool: 8,750 WETH");
-
-  await PrizePoolManager.createPool(
-    "Ethereum Grand Prize",
-    deployedTokens.WETH.address,
-    hre.ethers.parseUnits("11585", 18),
-    4,
-  );
-  console.log("✅ Semi-annual Pool: 11,585 WETH");
+  console.log("✅ Monthly Pool: 1,569 USDC");
 
   console.log("\n✨ MemePot Deployment Complete! ✨\n");
   console.log("📋 Contract Addresses:");

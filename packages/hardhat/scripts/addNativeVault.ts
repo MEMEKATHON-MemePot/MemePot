@@ -25,7 +25,7 @@ async function main() {
   console.log("Transaction hash:", tx.hash);
 
   // Verify vault was created
-  const vaultInfo = await VaultManager.getVaultInfo1(NATIVE_TOKEN);
+  const vaultInfo = await VaultManager.getVaultInfo(NATIVE_TOKEN);
   console.log("\nVault Info:");
   console.log("  Name:", vaultInfo.name);
   console.log("  Symbol:", vaultInfo.token);

@@ -153,6 +153,7 @@ contract PrizePoolManager is AccessControl, ReentrancyGuard, Pausable {
         poolId = poolCounter++;
 
         uint256 drawInterval = _getDrawInterval(frequency);
+        uint256 nextDrawTime = _calculateNextDrawTime(frequency);
 
         prizePools[poolId] = PrizePool({
             name: name,
@@ -161,7 +162,7 @@ contract PrizePoolManager is AccessControl, ReentrancyGuard, Pausable {
             frequency: frequency,
             totalPrize: uint96(totalPrize),
             drawInterval: uint32(drawInterval),
-            nextDrawTime: uint48(block.timestamp + drawInterval),
+            nextDrawTime: uint48(nextDrawTime),
             lastDrawTime: 0,
             totalParticipants: 0,
             totalTickets: 0,
@@ -308,7 +309,7 @@ contract PrizePoolManager is AccessControl, ReentrancyGuard, Pausable {
         // Update pool
         pool.drawCount++;
         pool.lastDrawTime = uint48(block.timestamp);
-        pool.nextDrawTime = uint48(block.timestamp + pool.drawInterval);
+        pool.nextDrawTime = uint48(_calculateNextDrawTime(pool.frequency));
         pool.totalPrize -= uint96(totalPrizeAmount);
         pool.status = PoolStatus.Active;
 
@@ -415,6 +416,135 @@ contract PrizePoolManager is AccessControl, ReentrancyGuard, Pausable {
         if (frequency == DrawFrequency.Quarterly) return 90 days;
         if (frequency == DrawFrequency.SemiAnnual) return 180 days;
         return 30 days; // Default to monthly
+    }
+
+    /**
+     * @notice Calculate next draw time based on frequency (aligned to calendar)
+     * @param frequency The draw frequency
+     * @return The next draw timestamp
+     */
+    function _calculateNextDrawTime(DrawFrequency frequency) internal view returns (uint256) {
+        if (frequency == DrawFrequency.Daily) {
+            return _getNextDayMidnight();
+        } else if (frequency == DrawFrequency.Weekly) {
+            return _getNextMondayMidnight();
+        } else if (frequency == DrawFrequency.Monthly) {
+            return _getNextMonthFirst();
+        } else {
+            // For other frequencies, use simple interval
+            return block.timestamp + _getDrawInterval(frequency);
+        }
+    }
+
+    /**
+     * @notice Get next day at midnight (00:00:00)
+     * @return Timestamp of tomorrow at 00:00:00
+     */
+    function _getNextDayMidnight() internal view returns (uint256) {
+        uint256 secondsInDay = 1 days;
+        uint256 currentDayStart = (block.timestamp / secondsInDay) * secondsInDay;
+        return currentDayStart + secondsInDay;
+    }
+
+    /**
+     * @notice Get next Monday at midnight (00:00:00)
+     * @return Timestamp of next Monday at 00:00:00
+     */
+    function _getNextMondayMidnight() internal view returns (uint256) {
+        uint256 secondsInDay = 1 days;
+        uint256 currentDayStart = (block.timestamp / secondsInDay) * secondsInDay;
+
+        // Thursday, Jan 1, 1970 was day 4 (0=Thu, 1=Fri, 2=Sat, 3=Sun, 4=Mon, 5=Tue, 6=Wed)
+        // We need to adjust: Monday should be 1
+        uint256 dayOfWeek = ((currentDayStart / secondsInDay) + 4) % 7; // 0=Sun, 1=Mon, ..., 6=Sat
+
+        uint256 daysUntilMonday;
+        if (dayOfWeek == 0) {
+            // Sunday
+            daysUntilMonday = 1;
+        } else if (dayOfWeek == 1) {
+            // Already Monday, get next Monday
+            daysUntilMonday = 7;
+        } else {
+            // Tue-Sat
+            daysUntilMonday = 8 - dayOfWeek;
+        }
+
+        return currentDayStart + (daysUntilMonday * secondsInDay);
+    }
+
+    /**
+     * @notice Get first day of next month at midnight (00:00:00)
+     * @return Timestamp of next month's first day at 00:00:00
+     */
+    function _getNextMonthFirst() internal view returns (uint256) {
+        uint256 currentTimestamp = block.timestamp;
+
+        // Get current year, month, day
+        (uint256 year, uint256 month, ) = _timestampToDate(currentTimestamp);
+
+        // Calculate next month
+        if (month == 12) {
+            month = 1;
+            year++;
+        } else {
+            month++;
+        }
+
+        // Return timestamp for first day of next month
+        return _dateToTimestamp(year, month, 1);
+    }
+
+    /**
+     * @notice Convert timestamp to date (year, month, day)
+     * @param timestamp Unix timestamp
+     * @return year The year
+     * @return month The month (1-12)
+     * @return day The day (1-31)
+     */
+    function _timestampToDate(uint256 timestamp) internal pure returns (uint256 year, uint256 month, uint256 day) {
+        uint256 secondsInDay = 1 days;
+        uint256 daysSinceEpoch = timestamp / secondsInDay;
+
+        // Simplified calendar calculation (good enough for near future)
+        uint256 z = daysSinceEpoch + 719468;
+        uint256 era = z / 146097;
+        uint256 doe = z - era * 146097;
+        uint256 yoe = (doe - doe/1460 + doe/36524 - doe/146096) / 365;
+        year = yoe + era * 400;
+        uint256 doy = doe - (365 * yoe + yoe/4 - yoe/100);
+        uint256 mp = (5 * doy + 2) / 153;
+        day = doy - (153 * mp + 2) / 5 + 1;
+        month = mp + (mp < 10 ? 3 : 0) - 9;
+        year += (month <= 2 ? 1 : 0);
+
+        return (year, month, day);
+    }
+
+    /**
+     * @notice Convert date to timestamp
+     * @param year Year
+     * @param month Month (1-12)
+     * @param day Day (1-31)
+     * @return Unix timestamp at 00:00:00 of that day
+     */
+    function _dateToTimestamp(uint256 year, uint256 month, uint256 day) internal pure returns (uint256) {
+        require(month >= 1 && month <= 12, "Invalid month");
+        require(day >= 1 && day <= 31, "Invalid day");
+
+        // Adjust for months before March
+        uint256 adjustedYear = month <= 2 ? year - 1 : year;
+        uint256 adjustedMonth = month <= 2 ? month + 9 : month - 3;
+
+        // Calculate era
+        uint256 era = adjustedYear / 400;
+        uint256 yoe = adjustedYear - era * 400;
+        uint256 doy = (153 * adjustedMonth + 2) / 5 + day - 1;
+        uint256 doe = yoe * 365 + yoe/4 - yoe/100 + doy;
+
+        uint256 daysSinceEpoch = era * 146097 + doe - 719468;
+
+        return daysSinceEpoch * 1 days;
     }
 
     /**

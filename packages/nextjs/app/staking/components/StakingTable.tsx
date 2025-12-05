@@ -20,11 +20,11 @@ interface Vault {
 
 // Token addresses and config (deployed on Insectarium network - chainId: 43522)
 const TOKENS: { [key: string]: { address: `0x${string}`; decimals: number } } = {
-  USDT: { address: "0x2F665Cec0DaC0E41112f4eB575077df443B522B1", decimals: 6 },
-  USDC: { address: "0x7C81888a24b92C7083507dD0747bcC190102418A", decimals: 6 },
+  USDT: { address: "0x681E7bb993F3a6f5710f177A45514Ec5b9cd330E", decimals: 6 },
+  USDC: { address: "0x0D651A847C150d0eE1DB767E661E417dB5E2B09a", decimals: 6 },
 };
 
-const VAULT_MANAGER_ADDRESS = "0x6E66cA2eb5862637a6Bab4bD7eC1fc9e0e919f2C" as `0x${string}`;
+const VAULT_MANAGER_ADDRESS = "0x5D998472F48FAecD46BA3619e982507D257E3801" as `0x${string}`;
 
 export default function StakingTable() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -61,9 +61,9 @@ export default function StakingTable() {
       id: "1",
       name: "USDT",
       token: "USDT",
-      tokenContract: "0x2F665Cec0DaC0E41112f4eB575077df443B522B1",
+      tokenContract: "0x681E7bb993F3a6f5710f177A45514Ec5b9cd330E",
       icon: "💵",
-      apr: "6",
+      apr: "1",
       totalDeposits: "$3,200,000",
       chain: "Memecore",
       volume24h: "$390,123",
@@ -74,9 +74,9 @@ export default function StakingTable() {
       id: "2",
       name: "USDC",
       token: "USDC",
-      tokenContract: "0x7C81888a24b92C7083507dD0747bcC190102418A",
+      tokenContract: "0x0D651A847C150d0eE1DB767E661E417dB5E2B09a",
       icon: "💎",
-      apr: "5.1",
+      apr: "1",
       totalDeposits: "$8,890,000",
       chain: "Memecore",
       volume24h: "$267,890",
@@ -85,11 +85,11 @@ export default function StakingTable() {
     },
     {
       id: "3",
-      name: "MEMECORE",
-      token: "M",
-      tokenContract: "0x1234567890abcdef1234567890abcdef12345678",
+      name: "MEME",
+      token: "MEME",
+      tokenContract: "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE",
       icon: "⚡",
-      apr: "3.8",
+      apr: "2",
       totalDeposits: "$5,120,000",
       chain: "Memecore",
       volume24h: "$234,567",
