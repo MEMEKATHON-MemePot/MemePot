@@ -1,7 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
+import { formatUnits } from "viem";
+import { useAccount } from "wagmi";
 import PrizeParticipationModal from "./PrizeParticipationModal";
 import PrizeWinningsModal from "./PrizeWinningsModal";
 import TransactionProgressModal from "~~/components/TransactionProgressModal";
+import { useAllPrizePools, useUserTicketCount, useUserWinChance } from "~~/hooks/usePrizePoolData";
 
 interface Prize {
   name: string;
@@ -10,6 +13,7 @@ interface Prize {
   userTickets: number;
   winChance: string;
   nextDraw: string;
+  poolId: bigint;
 }
 
 interface Winning {
@@ -28,6 +32,8 @@ export default function PrizeStatusSection() {
   const [showTransactionModal, setShowTransactionModal] = useState(false);
   const [selectedPrize, setSelectedPrize] = useState<Prize | null>(null);
   const [selectedWinning, setSelectedWinning] = useState<Winning | null>(null);
+  const { address: userAddress } = useAccount();
+
   const [transactionSteps, setTransactionSteps] = useState<
     Array<{ id: string; label: string; status: "pending" | "processing" | "completed" | "failed" }>
   >([
@@ -35,35 +41,42 @@ export default function PrizeStatusSection() {
     { id: "2", label: "Send Transaction", status: "pending" },
   ]);
 
-  const activePrizes = useMemo<Prize[]>(
-    () => [
-      {
-        name: "Daily Mega Draw",
-        totalPrize: "5,000",
-        currency: "USDT",
-        userTickets: 24,
-        winChance: "0.48%",
-        nextDraw: new Date(Date.now() + 8 * 60 * 60 * 1000 + 32 * 60 * 1000).toISOString(),
-      },
-      {
-        name: "Weekly Grand Prize",
-        totalPrize: "50,000",
-        currency: "USDC",
-        userTickets: 18,
-        winChance: "0.36%",
-        nextDraw: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000 + 12 * 60 * 60 * 1000).toISOString(),
-      },
-      {
-        name: "Monthly Jackpot",
-        totalPrize: "200,000",
-        currency: "ETH",
-        userTickets: 12,
-        winChance: "0.24%",
-        nextDraw: new Date(Date.now() + 18 * 24 * 60 * 60 * 1000 + 5 * 60 * 60 * 1000).toISOString(),
-      },
-    ],
-    [],
-  );
+  // Fetch all prize pools from contract
+  const { pools: contractPools } = useAllPrizePools();
+
+  // Convert contract pools to Prize format
+  const activePrizes = useMemo<Prize[]>(() => {
+    if (!contractPools) return [];
+
+    return contractPools
+      .map((pool, index) => {
+        const getTokenSymbol = (tokenAddress: string): string => {
+          const lowerAddress = tokenAddress.toLowerCase();
+          if (lowerAddress.includes("usdt")) return "USDT";
+          if (lowerAddress.includes("usdc")) return "USDC";
+          return "MEME";
+        };
+
+        const totalPrizeFormatted = formatUnits(pool.totalPrize, 18);
+
+        return {
+          name: pool.name,
+          totalPrize: parseFloat(totalPrizeFormatted).toLocaleString("en-US", {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 2,
+          }),
+          currency: getTokenSymbol(pool.token),
+          userTickets: 0, // Will be fetched individually if needed
+          winChance: "0%", // Will be calculated individually if needed
+          nextDraw: new Date(Number(pool.nextDrawTime) * 1000).toISOString(),
+          poolId: BigInt(index + 1),
+        };
+      })
+      .filter(prize => {
+        // TODO: Filter only pools where user has tickets
+        return true;
+      });
+  }, [contractPools]);
 
   const [prizeWinnings, setPrizeWinnings] = useState<Winning[]>([
     {

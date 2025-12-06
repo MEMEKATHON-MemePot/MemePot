@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
+import { formatUnits } from "viem";
+import { useAccount } from "wagmi";
 import PrizePoolCard from "./PrizePoolCard";
+import { DrawFrequency, getFrequencyString, useAllPrizePools, useUserWinChance } from "~~/hooks/usePrizePoolData";
 
 interface PrizePool {
   id: string;
@@ -106,32 +109,91 @@ const mockPrizePools: PrizePool[] = [
 export default function PrizePoolsSection() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAutoPlay, setIsAutoPlay] = useState(true);
+  const { address: userAddress } = useAccount();
+
+  // Fetch all prize pools from contract
+  const { pools: contractPools } = useAllPrizePools();
+
+  // Convert contract pools to display format
+  const prizePools: PrizePool[] =
+    contractPools?.map((pool, index) => {
+      // Token symbol mapping
+      const getTokenSymbol = (tokenAddress: string): string => {
+        const lowerAddress = tokenAddress.toLowerCase();
+        if (lowerAddress.includes("usdt")) return "USDT";
+        if (lowerAddress.includes("usdc")) return "USDC";
+        return "MEME";
+      };
+
+      const tokenSymbol = getTokenSymbol(pool.token);
+
+      // Icon and gradient mapping based on frequency
+      const getPoolStyle = (frequency: number) => {
+        switch (frequency) {
+          case DrawFrequency.Daily:
+            return { icon: "ri-flashlight-fill", gradient: "from-cyan-600 to-blue-600" };
+          case DrawFrequency.Weekly:
+            return { icon: "ri-money-dollar-circle-fill", gradient: "from-green-600 to-emerald-600" };
+          case DrawFrequency.BiWeekly:
+            return { icon: "ri-gift-fill", gradient: "from-pink-600 to-rose-600" };
+          case DrawFrequency.Monthly:
+            return { icon: "ri-fire-fill", gradient: "from-orange-600 to-red-600" };
+          case DrawFrequency.Quarterly:
+            return { icon: "ri-rocket-fill", gradient: "from-purple-600 to-indigo-600" };
+          case DrawFrequency.SemiAnnual:
+            return { icon: "ri-coin-fill", gradient: "from-purple-600 to-pink-600" };
+          default:
+            return { icon: "ri-trophy-fill", gradient: "from-yellow-600 to-orange-600" };
+        }
+      };
+
+      const style = getPoolStyle(pool.frequency);
+      const totalPrizeFormatted = formatUnits(pool.totalPrize, 18); // Assuming 18 decimals
+
+      return {
+        id: (index + 1).toString(),
+        name: pool.name,
+        totalPrize: parseFloat(totalPrizeFormatted).toLocaleString("en-US", {
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 2,
+        }),
+        currency: tokenSymbol,
+        frequency: getFrequencyString(pool.frequency),
+        duration: getFrequencyString(pool.frequency),
+        nextDraw: Number(pool.nextDrawTime) * 1000, // Convert to milliseconds
+        userTickets: 0, // Will be fetched individually if needed
+        winChance: "0%", // Will be calculated individually if needed
+        participants: Number(pool.totalParticipants),
+        icon: style.icon,
+        gradient: style.gradient,
+      };
+    }) || mockPrizePools;
 
   useEffect(() => {
     if (!isAutoPlay) return;
 
     const interval = setInterval(() => {
-      setCurrentIndex(prev => (prev + 1) % mockPrizePools.length);
+      setCurrentIndex(prev => (prev + 1) % prizePools.length);
     }, 5000);
 
     return () => clearInterval(interval);
-  }, [isAutoPlay]);
+  }, [isAutoPlay, prizePools.length]);
 
   const handlePrev = () => {
     setIsAutoPlay(false);
-    setCurrentIndex(prev => (prev - 1 + mockPrizePools.length) % mockPrizePools.length);
+    setCurrentIndex(prev => (prev - 1 + prizePools.length) % prizePools.length);
   };
 
   const handleNext = () => {
     setIsAutoPlay(false);
-    setCurrentIndex(prev => (prev + 1) % mockPrizePools.length);
+    setCurrentIndex(prev => (prev + 1) % prizePools.length);
   };
 
   const getVisiblePools = () => {
     const pools = [];
     for (let i = 0; i < 3; i++) {
-      const index = (currentIndex + i) % mockPrizePools.length;
-      pools.push(mockPrizePools[index]);
+      const index = (currentIndex + i) % prizePools.length;
+      pools.push(prizePools[index]);
     }
     return pools;
   };
@@ -185,7 +247,7 @@ export default function PrizePoolsSection() {
 
           {/* Carousel Indicators */}
           <div className="flex justify-center gap-2 mt-12">
-            {mockPrizePools.map((_, index) => (
+            {prizePools.map((_, index) => (
               <button
                 key={index}
                 onClick={() => {
@@ -208,7 +270,7 @@ export default function PrizePoolsSection() {
             </span>
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {mockPrizePools.map(pool => (
+            {prizePools.map(pool => (
               <PrizePoolCard key={pool.id} pool={pool} />
             ))}
           </div>

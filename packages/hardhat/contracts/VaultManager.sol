@@ -34,6 +34,15 @@ contract VaultManager is AccessControl, ReentrancyGuard, Pausable {
         bool isNative;
     }
 
+    // Volume tracking for 24h period
+    struct VolumeEntry {
+        uint256 amount;
+        uint64 timestamp;
+    }
+
+    // Token address => Array of volume entries
+    mapping(address => VolumeEntry[]) private volumeHistory;
+
     // User deposit information
     struct UserDeposit {
         uint128 amount; // 16 bytes - sufficient for most deposit amounts
@@ -130,7 +139,7 @@ contract VaultManager is AccessControl, ReentrancyGuard, Pausable {
     }
 
     /**
-     * @notice Update vault 24h volume
+     * @notice Update vault 24h volume (manual override)
      * @param token The ERC20 token address
      * @param volume The new 24h volume
      */
@@ -138,6 +147,46 @@ contract VaultManager is AccessControl, ReentrancyGuard, Pausable {
         require(vaults[token].tokenContract != address(0), "VaultManager: Vault not active");
 
         vaults[token].volume24h = volume;
+    }
+
+    /**
+     * @notice Internal function to update 24h volume tracking
+     * @param token The token address
+     * @param amount The transaction amount
+     */
+    function _updateVolume24h(address token, uint256 amount) private {
+        uint64 currentTime = uint64(block.timestamp);
+        uint64 cutoffTime = currentTime - 24 hours;
+
+        // Add new entry
+        volumeHistory[token].push(VolumeEntry({ amount: amount, timestamp: currentTime }));
+
+        // Calculate total volume in last 24h and clean old entries
+        uint256 totalVolume = 0;
+        uint256 validStartIndex = 0;
+
+        VolumeEntry[] storage entries = volumeHistory[token];
+        for (uint256 i = 0; i < entries.length; i++) {
+            if (entries[i].timestamp >= cutoffTime) {
+                totalVolume += entries[i].amount;
+                if (validStartIndex == 0 && i > 0) {
+                    validStartIndex = i;
+                }
+            }
+        }
+
+        // Remove old entries (older than 24h)
+        if (validStartIndex > 0) {
+            for (uint256 i = validStartIndex; i < entries.length; i++) {
+                entries[i - validStartIndex] = entries[i];
+            }
+            for (uint256 i = 0; i < validStartIndex; i++) {
+                entries.pop();
+            }
+        }
+
+        // Update vault volume
+        vaults[token].volume24h = totalVolume;
     }
 
     /**
@@ -163,6 +212,9 @@ contract VaultManager is AccessControl, ReentrancyGuard, Pausable {
 
         // Update vault total deposits
         vaults[token].totalDeposits += amount;
+
+        // Update 24h volume
+        _updateVolume24h(token, amount);
 
         // Transfer to YieldGenerator if set
         if (yieldGenerator != address(0)) {
@@ -190,6 +242,9 @@ contract VaultManager is AccessControl, ReentrancyGuard, Pausable {
 
         // Update vault total deposits
         vaults[NATIVE_TOKEN].totalDeposits += msg.value;
+
+        // Update 24h volume
+        _updateVolume24h(NATIVE_TOKEN, msg.value);
 
         // Transfer to YieldGenerator if set
         if (yieldGenerator != address(0)) {
@@ -220,6 +275,9 @@ contract VaultManager is AccessControl, ReentrancyGuard, Pausable {
 
         // Update vault total deposits
         vaults[token].totalDeposits -= withdrawAmount;
+
+        // Update 24h volume
+        _updateVolume24h(token, withdrawAmount);
 
         // Transfer tokens back to user
         // In production, this would request withdrawal from YieldGenerator

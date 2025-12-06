@@ -1,7 +1,10 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { formatUnits } from "viem";
+import { useAccount } from "wagmi";
 import VaultManageModal from "./VaultManageModal";
 import TransactionProgressModal from "~~/components/TransactionProgressModal";
+import { useAllVaults, useUserVaultBalance } from "~~/hooks/useVaultData";
 
 interface MyVaultsSectionProps {
   onVaultsUpdate?: (vaults: Vault[]) => void;
@@ -17,6 +20,9 @@ interface Vault {
   earned: number;
   status: string;
   ticketRate: number;
+  tokenContract: `0x${string}`;
+  decimals: number;
+  isNative: boolean;
 }
 
 export default function MyVaultsSection({ onVaultsUpdate }: MyVaultsSectionProps) {
@@ -24,6 +30,8 @@ export default function MyVaultsSection({ onVaultsUpdate }: MyVaultsSectionProps
   const [showManageModal, setShowManageModal] = useState(false);
   const [showTransactionModal, setShowTransactionModal] = useState(false);
   const [selectedVault, setSelectedVault] = useState<Vault | null>(null);
+  const { address: userAddress } = useAccount();
+
   const [transactionSteps, setTransactionSteps] = useState<
     Array<{ id: string; label: string; status: "pending" | "processing" | "completed" | "failed" }>
   >([
@@ -31,41 +39,44 @@ export default function MyVaultsSection({ onVaultsUpdate }: MyVaultsSectionProps
     { id: "2", label: "Send Transaction", status: "pending" },
   ]);
 
-  const [vaults, setVaults] = useState<Vault[]>([
-    {
-      name: "USDT Vault",
-      token: "USDT",
-      icon: "ri-coin-fill",
-      gradient: "from-green-600 to-emerald-600",
-      balance: 1200.0,
-      apy: 8.5,
-      earned: 81.6,
-      status: "Active",
-      ticketRate: 1.0,
-    },
-    {
-      name: "USDC Vault",
-      token: "USDC",
-      icon: "ri-coin-line",
-      gradient: "from-blue-600 to-cyan-600",
-      balance: 800.5,
-      apy: 7.2,
-      earned: 46.11,
-      status: "Active",
-      ticketRate: 1.0,
-    },
-    {
-      name: "WETH Vault",
-      token: "WETH",
-      icon: "ri-coin-fill",
-      gradient: "from-purple-600 to-pink-600",
-      balance: 445.17,
-      apy: 12.3,
-      earned: 43.87,
-      status: "Active",
-      ticketRate: 1.0,
-    },
-  ]);
+  // Fetch all vaults from contract
+  const { vaults: contractVaults, refetch: refetchVaults } = useAllVaults();
+
+  // Convert contract vaults to display format with user balances
+  const vaults: Vault[] =
+    contractVaults
+      ?.map(vault => {
+        const iconMap: { [key: string]: string } = {
+          USDT: "ri-coin-fill",
+          USDC: "ri-coin-line",
+          MEME: "ri-coin-fill",
+        };
+
+        const gradientMap: { [key: string]: string } = {
+          USDT: "from-green-600 to-emerald-600",
+          USDC: "from-blue-600 to-cyan-600",
+          MEME: "from-purple-600 to-pink-600",
+        };
+
+        return {
+          name: vault.name,
+          token: vault.token,
+          icon: iconMap[vault.token] || "ri-coin-fill",
+          gradient: gradientMap[vault.token] || "from-gray-600 to-gray-800",
+          balance: 0, // Will be fetched individually
+          apy: Number(vault.apr) / 100, // Convert from basis points
+          earned: 0, // TODO: Calculate from rewards
+          status: "Active",
+          ticketRate: 1.0,
+          tokenContract: vault.tokenContract,
+          decimals: vault.decimals,
+          isNative: vault.isNative,
+        };
+      })
+      .filter(vault => {
+        // TODO: Filter only vaults where user has balance
+        return true;
+      }) || [];
 
   const handleManageClick = (vault: Vault) => {
     setSelectedVault(vault);
@@ -73,26 +84,10 @@ export default function MyVaultsSection({ onVaultsUpdate }: MyVaultsSectionProps
   };
 
   const handleVaultUpdate = (action: "add" | "withdraw", amount: number, percentage?: number) => {
-    if (!selectedVault) return;
-
-    const updatedVaults = vaults
-      .map(v => {
-        if (v.name === selectedVault.name) {
-          if (action === "add") {
-            return { ...v, balance: v.balance + amount };
-          } else if (action === "withdraw") {
-            const withdrawAmount = (v.balance * (percentage || 0)) / 100;
-            return { ...v, balance: v.balance - withdrawAmount };
-          }
-        }
-        return v;
-      })
-      .filter(v => v.balance > 0);
-
-    setVaults(updatedVaults);
-    if (onVaultsUpdate) {
-      onVaultsUpdate(updatedVaults);
-    }
+    // Refetch vault data after transaction
+    setTimeout(() => {
+      refetchVaults();
+    }, 1500);
   };
 
   const handleTransactionStart = (action: "add" | "withdraw", amount: number, percentage?: number) => {

@@ -383,6 +383,21 @@ contract PrizePoolManager is AccessControl, ReentrancyGuard, Pausable {
     }
 
     /**
+     * @notice Get all prize pools
+     * @return Array of all PrizePool structs
+     */
+    function getAllEventPools() external view returns (PrizePool[] memory) {
+        uint256 length = poolCounter;
+        PrizePool[] memory pools = new PrizePool[](length);
+
+        for (uint256 i = 0; i < length; i++) {
+            pools[i] = prizePools[i + 1]; // Pool IDs start from 1
+        }
+
+        return pools;
+    }
+
+    /**
      * @notice Update pool status
      * @param poolId The pool ID
      * @param newStatus The new status
