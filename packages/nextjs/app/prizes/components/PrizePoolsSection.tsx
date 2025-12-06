@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import { formatUnits } from "viem";
-import { useAccount } from "wagmi";
 import PrizePoolCard from "./PrizePoolCard";
-import { DrawFrequency, getFrequencyString, useAllPrizePools, useUserWinChance } from "~~/hooks/usePrizePoolData";
+import { DrawFrequency, getFrequencyString, useAllPrizePools } from "~~/hooks/usePrizePoolData";
 
 interface PrizePool {
   id: string;
@@ -109,7 +108,6 @@ const mockPrizePools: PrizePool[] = [
 export default function PrizePoolsSection() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAutoPlay, setIsAutoPlay] = useState(true);
-  const { address: userAddress } = useAccount();
 
   // Fetch all prize pools from contract
   const { pools: contractPools } = useAllPrizePools();

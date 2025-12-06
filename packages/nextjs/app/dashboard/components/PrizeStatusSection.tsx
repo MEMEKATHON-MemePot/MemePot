@@ -1,10 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
 import { formatUnits } from "viem";
-import { useAccount } from "wagmi";
 import PrizeParticipationModal from "./PrizeParticipationModal";
 import PrizeWinningsModal from "./PrizeWinningsModal";
 import TransactionProgressModal from "~~/components/TransactionProgressModal";
-import { useAllPrizePools, useUserTicketCount, useUserWinChance } from "~~/hooks/usePrizePoolData";
+import { useAllPrizePools } from "~~/hooks/usePrizePoolData";
 
 interface Prize {
   name: string;
@@ -32,7 +31,6 @@ export default function PrizeStatusSection() {
   const [showTransactionModal, setShowTransactionModal] = useState(false);
   const [selectedPrize, setSelectedPrize] = useState<Prize | null>(null);
   const [selectedWinning, setSelectedWinning] = useState<Winning | null>(null);
-  const { address: userAddress } = useAccount();
 
   const [transactionSteps, setTransactionSteps] = useState<
     Array<{ id: string; label: string; status: "pending" | "processing" | "completed" | "failed" }>
@@ -72,7 +70,7 @@ export default function PrizeStatusSection() {
           poolId: BigInt(index + 1),
         };
       })
-      .filter(prize => {
+      .filter(() => {
         // TODO: Filter only pools where user has tickets
         return true;
       });
