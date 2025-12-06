@@ -132,3 +132,18 @@ html {
 .link:hover {
   opacity: 80%;
 }
+
+/* Animations for about page */
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
