@@ -510,9 +510,9 @@ contract PrizePoolManager is AccessControl, ReentrancyGuard, Pausable {
         uint256 z = daysSinceEpoch + 719468;
         uint256 era = z / 146097;
         uint256 doe = z - era * 146097;
-        uint256 yoe = (doe - doe/1460 + doe/36524 - doe/146096) / 365;
+        uint256 yoe = (doe - doe / 1460 + doe / 36524 - doe / 146096) / 365;
         year = yoe + era * 400;
-        uint256 doy = doe - (365 * yoe + yoe/4 - yoe/100);
+        uint256 doy = doe - (365 * yoe + yoe / 4 - yoe / 100);
         uint256 mp = (5 * doy + 2) / 153;
         day = doy - (153 * mp + 2) / 5 + 1;
         month = mp + (mp < 10 ? 3 : 0) - 9;
@@ -540,7 +540,7 @@ contract PrizePoolManager is AccessControl, ReentrancyGuard, Pausable {
         uint256 era = adjustedYear / 400;
         uint256 yoe = adjustedYear - era * 400;
         uint256 doy = (153 * adjustedMonth + 2) / 5 + day - 1;
-        uint256 doe = yoe * 365 + yoe/4 - yoe/100 + doy;
+        uint256 doe = yoe * 365 + yoe / 4 - yoe / 100 + doy;
 
         uint256 daysSinceEpoch = era * 146097 + doe - 719468;
 
